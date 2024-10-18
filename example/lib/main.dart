@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_dropdown/flutter_custom_dropdown.dart';
 
+import 'dropdown_item.dart';
+
 void main() {
   runApp(MyApp());
 }
@@ -44,18 +46,19 @@ class _DropdownExampleState extends State<DropdownExample> {
             CustomDropdownHelper.showDropdown(
               context: context,
               items: [
-                DropdownItem(id: 1, name: 'Option 1'),
-                DropdownItem(id: 2, name: 'Option 2'),
-                DropdownItem(id: 3, name: 'Option 3'),
-                DropdownItem(id: 4, name: 'Option 4'),
-                DropdownItem(id: 5, name: 'Option 5'),
-                DropdownItem(id: 6, name: 'Option 6'),
-                DropdownItem(id: 7, name: 'Option 7'),
-                DropdownItem(id: 8, name: 'Option 8'),
-                DropdownItem(id: 9, name: 'Option 9'),
+                DropdownItem(id: "1", name: 'Option 1'),
+                DropdownItem(id: "2", name: 'Option 2'),
+                DropdownItem(id: "3", name: 'Option 3'),
+                DropdownItem(id: "4", name: 'Option 4'),
+                DropdownItem(id: "5", name: 'Option 5'),
+                DropdownItem(id: "6", name: 'Option 6'),
+                DropdownItem(id: "7", name: 'Option 7'),
+                DropdownItem(id: "8", name: 'Option 8'),
+                DropdownItem(id: "9", name: 'Option 9'),
               ], // Pass your list of DropdownItems
               title: "Select an Item",
               bottomSheetMode: BottomSheetMode.full,
+              showSearch: false,
               onItemSelected: (DropdownItem? selectedItem) {
                 // Handle the selected item
                 setState(() {
