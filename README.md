@@ -19,7 +19,7 @@ To use the package, add flutter_custom_dropdown to your pubspec.yaml:
 dependencies:
   flutter_custom_dropdown:
     git:
-      url: https://github.com/your-repo/flutter_custom_dropdown.git
+      url:https://github.com/gmadhu27/flutter_custom_dropdown.git
 
 ```
 
@@ -113,9 +113,10 @@ CustomDropdownHelper.showDropdown<DropdownItem>(
 Bottom Sheet Modes
 You can display the dropdown using three different modes:
 
-Modal (default): This displays the dropdown as a modal bottom sheet.
-Non-Modal: Displays a normal bottom sheet that does not cover the screen fully.
-Full-Screen: Displays the dropdown in full-screen mode.
+* Modal (default): This displays the dropdown as a modal bottom sheet.
+* Non-Modal: Displays a normal bottom sheet that does not cover the screen fully.
+* Full-Screen: Displays the dropdown in full-screen mode.
+  
 ```dart
 CustomDropdownHelper.showDropdown<DropdownItem>(
   context: context,
@@ -153,8 +154,8 @@ Exception Handling
 
 
 ## Additional information
-Feel free to contribute to this package, raise issues, or suggest new features by creating an issue in the GitHub repository. This package is open-source, and contributions are always welcome.
+Feel free to contribute to this package, raise issues, or suggest new features by creating an issue in this GitHub repository. This package is open-source, and contributions are always welcome.
 
 For more details and examples, visit the /example folder.
 
-This README provides a concise overview of how to use the package, examples, and additional information for users. You can modify the details based on your specific project requirements, including the repository link or contributing guidelines
+This README provides a concise overview of how to use the package, examples, and additional information for users. You can modify the details based on your specific project requirements, including the repository link or contributing guidelines.
