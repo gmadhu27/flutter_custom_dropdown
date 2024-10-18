@@ -96,8 +96,21 @@ class DropdownExample extends StatelessWidget {
   }
 }
 ```
+## DropdownItem Class Example
+Here is a basic example of a DropdownItem class, which is used in the dropdown. This class implements the toString() method to ensure proper display of the item names.
 
-Searchable Dropdown Example
+```dart
+class DropdownItem {
+  final String id;
+  final String name;
+
+  DropdownItem({required this.id, required this.name});
+
+  @override
+  String toString() => name; // Override toString for display purposes
+}
+```
+## Searchable Dropdown Example
 ```dart
 CustomDropdownHelper.showDropdown<DropdownItem>(
   context: context,
@@ -128,7 +141,7 @@ CustomDropdownHelper.showDropdown<DropdownItem>(
   },
 );
 ```
-Custom Item Display
+## Custom Item Display
 You can provide a custom item builder to display items in the dropdown. If not provided, the package defaults to a ListTile using the toString() method of the items.
 ```dart
 CustomDropdownHelper.showDropdown<DropdownItem>(
