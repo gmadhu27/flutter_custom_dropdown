@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_custom_dropdown/src/helper/dropdown_helper.dart';
 import 'helper/bottom_sheet_mode.dart';
 
 class CustomDropdownHelper {
@@ -9,6 +10,7 @@ class CustomDropdownHelper {
     required Function(T?) onItemSelected,
     BottomSheetMode bottomSheetMode = BottomSheetMode.normal,
     bool showSearch = true,
+    Widget Function(T)? itemBuilder,
   }) {
     // Check if the items list is empty
     _checkItemsList(items);
@@ -22,6 +24,7 @@ class CustomDropdownHelper {
       onItemSelected: onItemSelected,
       bottomSheetMode: bottomSheetMode,
       showSearch: showSearch,
+      itemBuilder: itemBuilder,
     );
   }
 
@@ -36,7 +39,6 @@ class CustomDropdownHelper {
       final String objectToString = Object().toString();
       final String itemToString = items.first.toString();
 
-      // Check if toString() is overridden by comparing it to the default `Object` implementation.
       if (itemToString == objectToString ||
           itemToString.contains('Instance of')) {
         throw Exception(
@@ -52,6 +54,7 @@ class CustomDropdownHelper {
     required Function(T?) onItemSelected,
     BottomSheetMode bottomSheetMode = BottomSheetMode.normal,
     bool showSearch = true,
+    Widget Function(T)? itemBuilder,
   }) {
     // Show the bottom sheet based on the mode
     if (bottomSheetMode == BottomSheetMode.modal) {
@@ -65,13 +68,13 @@ class CustomDropdownHelper {
           return DraggableScrollableSheet(
             expand: false,
             builder: (context, scrollController) {
-              return _CustomDropdownBottomSheet<T>(
-                items: items,
-                title: title,
-                onItemSelected: onItemSelected,
-                scrollController: scrollController,
-                showSearch: showSearch, // Pass showSearch
-              );
+              return CustomDropdownBottomSheet<T>(
+                  items: items,
+                  title: title,
+                  onItemSelected: onItemSelected,
+                  scrollController: scrollController,
+                  showSearch: showSearch, // Pass showSearch
+                  itemBuilder: itemBuilder);
             },
           );
         },
@@ -80,130 +83,25 @@ class CustomDropdownHelper {
       showBottomSheet(
         context: context,
         builder: (context) {
-          return _CustomDropdownBottomSheet<T>(
-            items: items,
-            title: title,
-            onItemSelected: onItemSelected,
-            showSearch: showSearch, // Pass showSearch
-          );
+          return CustomDropdownBottomSheet<T>(
+              items: items,
+              title: title,
+              onItemSelected: onItemSelected,
+              showSearch: showSearch, // Pass showSearch
+              itemBuilder: itemBuilder);
         },
       );
     } else {
       // Navigate to a full-screen page
       Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => _CustomDropdownBottomSheet<T>(
-          items: items,
-          title: title,
-          onItemSelected: onItemSelected,
-          fullScreenMode: true, // Full-screen mode flag
-          showSearch: showSearch, // Pass showSearch
-        ),
+        builder: (context) => CustomDropdownBottomSheet<T>(
+            items: items,
+            title: title,
+            onItemSelected: onItemSelected,
+            fullScreenMode: true, // Full-screen mode flag
+            showSearch: showSearch, // Pass showSearch
+            itemBuilder: itemBuilder),
       ));
     }
-  }
-}
-
-class _CustomDropdownBottomSheet<T> extends StatefulWidget {
-  final List<T> items;
-  final String title;
-  final Function(T?) onItemSelected;
-  final ScrollController? scrollController;
-  final bool fullScreenMode;
-  final bool showSearch;
-
-  const _CustomDropdownBottomSheet({
-    required this.items,
-    required this.title,
-    required this.onItemSelected,
-    this.scrollController,
-    this.fullScreenMode = false, // Default is not full-screen mode
-    this.showSearch = true, // Default to show search bar
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  _CustomDropdownBottomSheetState<T> createState() =>
-      _CustomDropdownBottomSheetState<T>();
-}
-
-class _CustomDropdownBottomSheetState<T>
-    extends State<_CustomDropdownBottomSheet<T>> {
-  late List<T> filteredItems;
-  final TextEditingController searchController = TextEditingController();
-
-  @override
-  void initState() {
-    super.initState();
-    filteredItems = widget.items; // Initialize with all items
-    searchController.addListener(_filterItems);
-  }
-
-  @override
-  void dispose() {
-    searchController.dispose();
-    super.dispose();
-  }
-
-  void _filterItems() {
-    setState(() {
-      filteredItems = widget.items.where((item) {
-        return item
-            .toString()
-            .toLowerCase()
-            .contains(searchController.text.toLowerCase());
-      }).toList();
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Material(
-      // Wrap content with Material widget
-      child: Container(
-        height: widget.fullScreenMode
-            ? MediaQuery.of(context).size.height
-            : 400, // Set height based on mode
-        padding: EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              widget.title,
-              style: TextStyle(
-                fontSize: 20.0,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            SizedBox(height: 10.0),
-            if (widget.showSearch) // Conditionally show the search bar
-              TextField(
-                controller: searchController,
-                decoration: InputDecoration(
-                  labelText: 'Search',
-                  border: OutlineInputBorder(),
-                ),
-              ),
-            if (widget.showSearch) SizedBox(height: 10.0),
-            Expanded(
-              child: ListView.builder(
-                controller:
-                    widget.scrollController, // Use the passed scrollController
-                itemCount: filteredItems.length,
-                itemBuilder: (context, index) {
-                  final item = filteredItems[index];
-                  return ListTile(
-                    title: Text(item.toString()), // Use toString() for display
-                    onTap: () {
-                      widget.onItemSelected(item);
-                      Navigator.pop(context); // Close the BottomSheet
-                    },
-                  );
-                },
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
   }
 }

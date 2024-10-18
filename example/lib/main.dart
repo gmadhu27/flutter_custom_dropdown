@@ -55,15 +55,24 @@ class _DropdownExampleState extends State<DropdownExample> {
                 DropdownItem(id: "7", name: 'Option 7'),
                 DropdownItem(id: "8", name: 'Option 8'),
                 DropdownItem(id: "9", name: 'Option 9'),
-              ], // Pass your list of DropdownItems
+              ],
               title: "Select an Item",
-              bottomSheetMode: BottomSheetMode.full,
-              showSearch: false,
+              //bottomSheetMode is by deafult normal
+              bottomSheetMode: BottomSheetMode.modal,
+              //showSearch is by deafult true
+              showSearch: true,
               onItemSelected: (DropdownItem? selectedItem) {
                 // Handle the selected item
                 setState(() {
                   _selectedItemName = selectedItem?.name;
                 });
+              },
+              //itemBuilder is an optional
+              itemBuilder: (item) {
+                return ListTile(
+                  title: Text(item.name),
+                  subtitle: Text(item.id),
+                );
               },
             );
           },
