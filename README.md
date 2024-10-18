@@ -148,7 +148,7 @@ CustomDropdownHelper.showDropdown<DropdownItem>(
   },
 );
 ```
-Exception Handling
+## Exception Handling
 * Empty List: If the items list is empty, an exception will be thrown to notify the developer.
 * ToString Check: The package checks if the class used for the items overrides the toString() method. If not, an exception will be thrown, ensuring that the dropdown can display items correctly.
 
