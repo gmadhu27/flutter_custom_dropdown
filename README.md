@@ -110,7 +110,7 @@ CustomDropdownHelper.showDropdown<DropdownItem>(
   },
 );
 ```
-Bottom Sheet Modes
+## Bottom Sheet Modes
 You can display the dropdown using three different modes:
 
 * Modal (default): This displays the dropdown as a modal bottom sheet.
