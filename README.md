@@ -1,4 +1,4 @@
-## flutter_custom_dropdown
+## flutter_custom_dropdown_list
 
 A customizable dropdown package for Flutter that allows developers to display a dropdown using bottom sheets or a full-screen modal. This package supports dynamic item rendering with optional itemBuilder, search functionality, and three different bottom sheet display modes.
 
@@ -13,11 +13,20 @@ A customizable dropdown package for Flutter that allows developers to display a 
 
 
 ## Getting started
-To use the package, add flutter_custom_dropdown to your pubspec.yaml:
+To use the package, add flutter_custom_dropdown_list to your pubspec.yaml:
 
 ```dart
 dependencies:
-  flutter_custom_dropdown:
+  dependencies:
+  flutter_custom_dropdown_list: ^1.0.0
+
+```
+
+or 
+
+```dart
+dependencies:
+  flutter_custom_dropdown_list:
     git:
       url:https://github.com/gmadhu27/flutter_custom_dropdown.git
 
@@ -25,7 +34,7 @@ dependencies:
 
 Make sure to import the package in your Dart files:
 ```dart
-import 'package:flutter_custom_dropdown/flutter_custom_dropdown.dart';
+import 'package:flutter_custom_dropdown_list/flutter_custom_dropdown.dart';
 ```
 
 ## Usage
@@ -35,7 +44,7 @@ Simple Dropdown Example:
 
 ```dart
 import 'package:flutter/material.dart';
-import 'package:flutter_custom_dropdown/flutter_custom_dropdown.dart';
+import 'package:flutter_custom_dropdown_list/flutter_custom_dropdown.dart';
 
 void main() {
   runApp(MyApp());

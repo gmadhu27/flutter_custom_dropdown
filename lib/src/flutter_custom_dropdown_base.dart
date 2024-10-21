@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_custom_dropdown/src/helper/dropdown_helper.dart';
+import 'package:flutter_custom_dropdown_list/src/helper/dropdown_helper.dart';
 import 'helper/bottom_sheet_mode.dart';
 
 class CustomDropdownHelper {
