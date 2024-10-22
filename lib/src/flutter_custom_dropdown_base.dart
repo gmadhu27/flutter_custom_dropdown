@@ -69,11 +69,9 @@ class CustomDropdownHelper {
     // Show the bottom sheet based on the mode
     if (bottomSheetMode == BottomSheetMode.modal) {
       showModalBottomSheet(
+        backgroundColor: Colors.transparent,
         context: context,
         isScrollControlled: true,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(top: Radius.circular(30.0)),
-        ),
         builder: (context) {
           return DraggableScrollableSheet(
             expand: false,
@@ -95,9 +93,6 @@ class CustomDropdownHelper {
     } else if (bottomSheetMode == BottomSheetMode.normal) {
       showBottomSheet(
         context: context,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(top: Radius.circular(30.0)),
-        ),
         builder: (context) {
           return CustomDropdownBottomSheet<T>(
               items: items,

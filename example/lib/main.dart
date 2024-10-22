@@ -52,34 +52,62 @@ class _DropdownExampleState extends State<DropdownExample> {
       children: [
         ElevatedButton(
           onPressed: () {
-            CustomDropdownHelper.showDropdown(
-              context: context,
-              items: items,
-              title: "Select an Item",
-              //bottomSheetMode is an optional by deafult normal
-              bottomSheetMode: BottomSheetMode.normal,
-              //showSearch is an optional by deafult true
-              showSearch: true,
-              onItemSelected: (DropdownItem? selectedItem) {
-                // Handle the selected item
-                setState(() {
-                  _selectedItemName = selectedItem?.name;
-                });
-              },
-              //itemBuilder is an optional
-              itemBuilder: (item) {
-                return ListTile(
-                  title: Text(item.name),
-                  subtitle: Text(item.id),
-                );
-              },
-              // Custom search is an optional and handle logic here
-              itemSearchCondition: (item, searchText) {
-                return item.id.toLowerCase().contains(searchText) ||
-                    item.name.toLowerCase().contains(searchText);
-              },
-              // CustomDropdownTheme is an optional
-              theme: CustomDropdownTheme(
+            openDialog(BottomSheetMode.normal);
+          },
+          child: const Text('Open Normal Custom Dropdown'),
+        ),
+        const SizedBox(height: 40),
+        ElevatedButton(
+          onPressed: () {
+            openDialog(BottomSheetMode.modal);
+          },
+          child: const Text('Open Modal Custom Dropdown'),
+        ),
+        const SizedBox(height: 40),
+        ElevatedButton(
+          onPressed: () {
+            openDialog(BottomSheetMode.full);
+          },
+          child: const Text('Open Full Custom Dropdown'),
+        ),
+        const SizedBox(height: 40),
+        Text(
+          _selectedItemName ?? 'No item selected',
+          style: const TextStyle(fontSize: 20.0),
+        ),
+      ],
+    );
+  }
+
+  void openDialog(BottomSheetMode modal) {
+    CustomDropdownHelper.showDropdown(
+      context: context,
+      items: items,
+      title: "Select an Item",
+      //bottomSheetMode is an optional by deafult normal
+      bottomSheetMode: modal,
+      //showSearch is an optional by deafult true
+      showSearch: true,
+      onItemSelected: (DropdownItem? selectedItem) {
+        // Handle the selected item
+        setState(() {
+          _selectedItemName = selectedItem?.name;
+        });
+      },
+      //itemBuilder is an optional
+      itemBuilder: (item) {
+        return ListTile(
+          title: Text(item.name),
+          subtitle: Text(item.id),
+        );
+      },
+      // Custom search is an optional and handle logic here
+      itemSearchCondition: (item, searchText) {
+        return item.id.toLowerCase().contains(searchText) ||
+            item.name.toLowerCase().contains(searchText);
+      },
+      // CustomDropdownTheme is an optional
+      /* theme: CustomDropdownTheme(
                   // backgroundColor is an optional
                   backgroundColor: Colors.deepOrange,
                   // backIconColor is an optional
@@ -88,7 +116,7 @@ class _DropdownExampleState extends State<DropdownExample> {
                   titleTextStyle:
                       const TextStyle(color: Colors.white, fontSize: 22),
                   // searchBoxDecoration is an optional
-                  searchBoxDecoration: InputDecoration(
+                   searchBoxDecoration: InputDecoration(
                     hintText: 'Search here',
                     hintStyle:
                         const TextStyle(color: Colors.white, fontSize: 18),
@@ -106,17 +134,7 @@ class _DropdownExampleState extends State<DropdownExample> {
                     color: Colors.deepOrange,
                     borderRadius:
                         BorderRadius.vertical(top: Radius.circular(30.0)),
-                  )),
-            );
-          },
-          child: const Text('Open Custom Dropdown'),
-        ),
-        const SizedBox(height: 40),
-        Text(
-          _selectedItemName ?? 'No item selected',
-          style: const TextStyle(fontSize: 20.0),
-        ),
-      ],
+                  )), */
     );
   }
 }
