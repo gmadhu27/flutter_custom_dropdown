@@ -142,7 +142,7 @@ CustomDropdownHelper.showDropdown<DropdownItem>(
   title: 'Select Item',
   onItemSelected: (selectedItem) {
   print('Selected: ${selectedItem?.name}');
-   },
+   }, 
   showSearch: true,
   itemSearchCondition: (item, searchText) {
    // Custom search condition: match both id and name

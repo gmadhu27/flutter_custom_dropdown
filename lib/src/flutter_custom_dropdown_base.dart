@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_dropdown_list/src/helper/dropdown_helper.dart';
 import 'helper/bottom_sheet_mode.dart';
+import 'helper/custom_dropdown_theme.dart';
 
 class CustomDropdownHelper {
   static void showDropdown<T>({
@@ -8,10 +9,12 @@ class CustomDropdownHelper {
     required List<T> items,
     required String title,
     required Function(T?) onItemSelected,
+    //optional
     BottomSheetMode bottomSheetMode = BottomSheetMode.normal,
     bool showSearch = true,
     Widget Function(T)? itemBuilder,
     bool Function(T, String)? itemSearchCondition,
+    CustomDropdownTheme? theme,
   }) {
     // Check if the items list is empty
     _checkItemsList(items);
@@ -29,7 +32,8 @@ class CustomDropdownHelper {
         bottomSheetMode: bottomSheetMode,
         showSearch: showSearch,
         itemBuilder: itemBuilder,
-        itemSearchCondition: itemSearchCondition);
+        itemSearchCondition: itemSearchCondition,
+        theme: theme);
   }
 
   static void _checkItemsList<T>(List<T> items) {
@@ -51,35 +55,39 @@ class CustomDropdownHelper {
     }
   }
 
-  static void _showCustomDropdown<T>(
-      {required BuildContext context,
-      required List<T> items,
-      required String title,
-      required Function(T?) onItemSelected,
-      BottomSheetMode bottomSheetMode = BottomSheetMode.normal,
-      bool showSearch = true,
-      Widget Function(T)? itemBuilder,
-      itemSearchCondition}) {
+  static void _showCustomDropdown<T>({
+    required BuildContext context,
+    required List<T> items,
+    required String title,
+    required Function(T?) onItemSelected,
+    BottomSheetMode bottomSheetMode = BottomSheetMode.normal,
+    bool showSearch = true,
+    Widget Function(T)? itemBuilder,
+    itemSearchCondition,
+    theme,
+  }) {
     // Show the bottom sheet based on the mode
     if (bottomSheetMode == BottomSheetMode.modal) {
       showModalBottomSheet(
         context: context,
         isScrollControlled: true,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(top: Radius.circular(20.0)),
+          borderRadius: BorderRadius.vertical(top: Radius.circular(30.0)),
         ),
         builder: (context) {
           return DraggableScrollableSheet(
             expand: false,
             builder: (context, scrollController) {
               return CustomDropdownBottomSheet<T>(
-                  items: items,
-                  title: title,
-                  onItemSelected: onItemSelected,
-                  scrollController: scrollController,
-                  showSearch: showSearch,
-                  itemBuilder: itemBuilder,
-                  itemSearchCondition: itemSearchCondition);
+                items: items,
+                title: title,
+                onItemSelected: onItemSelected,
+                scrollController: scrollController,
+                showSearch: showSearch,
+                itemBuilder: itemBuilder,
+                itemSearchCondition: itemSearchCondition,
+                theme: theme,
+              );
             },
           );
         },
@@ -87,6 +95,9 @@ class CustomDropdownHelper {
     } else if (bottomSheetMode == BottomSheetMode.normal) {
       showBottomSheet(
         context: context,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(top: Radius.circular(30.0)),
+        ),
         builder: (context) {
           return CustomDropdownBottomSheet<T>(
               items: items,
@@ -94,7 +105,8 @@ class CustomDropdownHelper {
               onItemSelected: onItemSelected,
               showSearch: showSearch,
               itemBuilder: itemBuilder,
-              itemSearchCondition: itemSearchCondition);
+              itemSearchCondition: itemSearchCondition,
+              theme: theme);
         },
       );
     } else {
@@ -107,7 +119,8 @@ class CustomDropdownHelper {
             fullScreenMode: true,
             showSearch: showSearch,
             itemBuilder: itemBuilder,
-            itemSearchCondition: itemSearchCondition),
+            itemSearchCondition: itemSearchCondition,
+            theme: theme),
       ));
     }
   }

@@ -78,6 +78,35 @@ class _DropdownExampleState extends State<DropdownExample> {
                 return item.id.toLowerCase().contains(searchText) ||
                     item.name.toLowerCase().contains(searchText);
               },
+              // CustomDropdownTheme is an optional
+              theme: CustomDropdownTheme(
+                  // backgroundColor is an optional
+                  backgroundColor: Colors.deepOrange,
+                  // backIconColor is an optional
+                  backIconColor: Colors.white,
+                  // titleTextStyle is an optional
+                  titleTextStyle:
+                      const TextStyle(color: Colors.white, fontSize: 22),
+                  // searchBoxDecoration is an optional
+                  searchBoxDecoration: InputDecoration(
+                    hintText: 'Search here',
+                    hintStyle:
+                        const TextStyle(color: Colors.white, fontSize: 18),
+                    filled: true,
+                    fillColor: Colors.orange.shade100,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide:
+                          const BorderSide(color: Colors.orange, width: 2),
+                    ),
+                    prefixIcon: const Icon(Icons.search, color: Colors.white),
+                  ),
+                  // bottomSheetBoxDecoration is an optional
+                  bottomSheetBoxDecoration: const BoxDecoration(
+                    color: Colors.deepOrange,
+                    borderRadius:
+                        BorderRadius.vertical(top: Radius.circular(30.0)),
+                  )),
             );
           },
           child: const Text('Open Custom Dropdown'),
