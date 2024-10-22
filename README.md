@@ -5,11 +5,12 @@ A customizable dropdown package for Flutter that allows developers to display a 
 
 ## Features
 * Customizable Items: Use dynamic items of any type and display them using an optional itemBuilder.
-* Multiple Bottom Sheet Modes: Supports modal, non-modal, and full-screen modes for the dropdown.
+* Multiple Bottom Sheet Modes: Supports modal, normal, and full-screen modes for the dropdown.
 * Search Functionality: Easily enable or disable search in the dropdown to filter items.
 * Generic Support: Allows usage of any class or data model as dropdown items.
 * ToString Validation: Automatically checks if your custom class overrides the toString() method to ensure proper display.
 * Optional ItemBuilder: Customize the way items are displayed using a builder function or default to a ListTile.
+* Optional itemSearchCondition: Optional search functionality is an optional parameter that allows to define custom logic for searching through the dropdown items.
 
 
 ## Getting started
@@ -131,11 +132,34 @@ CustomDropdownHelper.showDropdown<DropdownItem>(
   },
 );
 ```
+## Optional itemSearchCondition
+The itemSearchCondition is an optional parameter that allows you to define custom logic for searching through the dropdown items.Here’s an example of how to use the dropdown in your Flutter app, including the optional itemSearchCondition for custom search behavior:
+
+```dart
+CustomDropdownHelper.showDropdown<DropdownItem>(
+  context: context,
+  items: items,
+  title: 'Select Item',
+  onItemSelected: (selectedItem) {
+  print('Selected: ${selectedItem?.name}');
+   },
+  showSearch: true,
+  itemSearchCondition: (item, searchText) {
+   // Custom search condition: match both id and name
+   return item.name.toLowerCase().contains(searchText.toLowerCase()) ||
+    item.id.contains(searchText);
+ },
+);
+```
+In the example above, the search checks if the name or id of the item contains the search text. You can customize this to fit your specific data structure and search needs.
+
+If itemSearchCondition is not provided, the dropdown will use the default behavior of matching the toString() method for filtering items during search.
+
 ## Bottom Sheet Modes
 You can display the dropdown using three different modes:
 
-* Modal (default): This displays the dropdown as a modal bottom sheet.
-* Non-Modal: Displays a normal bottom sheet that does not cover the screen fully.
+* Normal (default): Displays a normal bottom sheet that does not cover the screen fully.
+* Modal: This displays the dropdown as a modal bottom sheet.
 * Full-Screen: Displays the dropdown in full-screen mode.
   
 ```dart
