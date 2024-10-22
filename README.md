@@ -253,6 +253,13 @@ CustomDropdownHelper.showDropdown(
 );
 ```
 ## CustomDropdownTheme Properties
+| Property | Type | Description |
+| -------- | ---- | :------: |
+| backgroundColor | Color? | The background color of the dropdown and the bottom sheet. Default is Colors.grey.withOpacity(0.6). |
+| backIconColor | Color? | The color of the back icon or close button. Default is Colors.black. |
+| titleTextStyle | TextStyle? | The text style for the title of the dropdown or bottom sheet. |
+| searchBoxDecoration | InputDecoration? | Custom decoration for the search box input field, including hint text, border, and prefix icon. |
+| bottomSheetBoxDecoration | BoxDecoration? | Custom decoration for the bottom sheet, allowing you to control background color, shape, etc. |
 
 1. Background Color: You can change the background color of the dropdown by passing a custom color to the backgroundColor property. This affects the entire bottom sheet background.
 

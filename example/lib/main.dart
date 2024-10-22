@@ -57,7 +57,7 @@ class _DropdownExampleState extends State<DropdownExample> {
               items: items,
               title: "Select an Item",
               //bottomSheetMode is an optional by deafult normal
-              bottomSheetMode: BottomSheetMode.full,
+              bottomSheetMode: BottomSheetMode.normal,
               //showSearch is an optional by deafult true
               showSearch: true,
               onItemSelected: (DropdownItem? selectedItem) {
