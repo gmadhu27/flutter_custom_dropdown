@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_dropdown_list/flutter_custom_dropdown.dart';
-
 import 'dropdown_item.dart';
 
 void main() {
@@ -34,7 +33,17 @@ class DropdownExample extends StatefulWidget {
 
 class _DropdownExampleState extends State<DropdownExample> {
   String? _selectedItemName;
-
+  final items = [
+    DropdownItem(id: "1", name: 'Option 1'),
+    DropdownItem(id: "2", name: 'Option 2'),
+    DropdownItem(id: "3", name: 'Option 3'),
+    DropdownItem(id: "4", name: 'Option 4'),
+    DropdownItem(id: "5", name: 'Option 5'),
+    DropdownItem(id: "6", name: 'Option 6'),
+    DropdownItem(id: "7", name: 'Option 7'),
+    DropdownItem(id: "8", name: 'Option 8'),
+    DropdownItem(id: "9", name: 'Option 9'),
+  ];
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -45,21 +54,11 @@ class _DropdownExampleState extends State<DropdownExample> {
           onPressed: () {
             CustomDropdownHelper.showDropdown(
               context: context,
-              items: [
-                DropdownItem(id: "1", name: 'Option 1'),
-                DropdownItem(id: "2", name: 'Option 2'),
-                DropdownItem(id: "3", name: 'Option 3'),
-                DropdownItem(id: "4", name: 'Option 4'),
-                DropdownItem(id: "5", name: 'Option 5'),
-                DropdownItem(id: "6", name: 'Option 6'),
-                DropdownItem(id: "7", name: 'Option 7'),
-                DropdownItem(id: "8", name: 'Option 8'),
-                DropdownItem(id: "9", name: 'Option 9'),
-              ],
+              items: items,
               title: "Select an Item",
-              //bottomSheetMode is by deafult normal
-              bottomSheetMode: BottomSheetMode.modal,
-              //showSearch is by deafult true
+              //bottomSheetMode is an optional by deafult normal
+              bottomSheetMode: BottomSheetMode.full,
+              //showSearch is an optional by deafult true
               showSearch: true,
               onItemSelected: (DropdownItem? selectedItem) {
                 // Handle the selected item
@@ -73,6 +72,11 @@ class _DropdownExampleState extends State<DropdownExample> {
                   title: Text(item.name),
                   subtitle: Text(item.id),
                 );
+              },
+              // Custom search is an optional and handle logic here
+              itemSearchCondition: (item, searchText) {
+                return item.id.toLowerCase().contains(searchText) ||
+                    item.name.toLowerCase().contains(searchText);
               },
             );
           },

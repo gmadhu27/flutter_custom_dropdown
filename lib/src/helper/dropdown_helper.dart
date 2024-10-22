@@ -8,6 +8,7 @@ class CustomDropdownBottomSheet<T> extends StatefulWidget {
   final bool fullScreenMode;
   final bool showSearch;
   final Widget Function(T)? itemBuilder;
+  final bool Function(T, String)? itemSearchCondition;
 
   const CustomDropdownBottomSheet({
     required this.items,
@@ -17,6 +18,7 @@ class CustomDropdownBottomSheet<T> extends StatefulWidget {
     this.fullScreenMode = false,
     this.showSearch = true,
     this.itemBuilder,
+    this.itemSearchCondition,
     Key? key,
   }) : super(key: key);
 
@@ -45,11 +47,14 @@ class _CustomDropdownBottomSheetState<T>
 
   void _filterItems() {
     setState(() {
+      final searchText = searchController.text.toLowerCase();
+
       filteredItems = widget.items.where((item) {
-        return item
-            .toString()
-            .toLowerCase()
-            .contains(searchController.text.toLowerCase());
+        if (widget.itemSearchCondition != null) {
+          return widget.itemSearchCondition!(item, searchText);
+        } else {
+          return item.toString().toLowerCase().contains(searchText);
+        }
       }).toList();
     });
   }
@@ -64,16 +69,43 @@ class _CustomDropdownBottomSheetState<T>
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(widget.title,
-                style: const TextStyle(
-                    fontSize: 20.0, fontWeight: FontWeight.bold)),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  widget.title,
+                  style: const TextStyle(
+                    fontSize: 20.0,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                IconButton(
+                  icon: const Icon(
+                    Icons.close,
+                  ),
+                  onPressed: () => Navigator.pop(context),
+                ),
+              ],
+            ),
             const SizedBox(height: 10.0),
             if (widget.showSearch)
-              TextField(
-                controller: searchController,
-                decoration: const InputDecoration(
-                    labelText: 'Search', border: OutlineInputBorder()),
-              ),
+              Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: TextField(
+                      textAlignVertical: TextAlignVertical(y: 0.2),
+                      controller: searchController,
+                      decoration: InputDecoration(
+                        prefixIcon: Icon(
+                          Icons.search,
+                        ),
+                        hintText: 'Search here',
+                        hintStyle:
+                            TextStyle(color: Colors.black.withOpacity(0.6)),
+                        border: InputBorder.none,
+                      ))),
             if (widget.showSearch) const SizedBox(height: 10.0),
             Expanded(
               child: ListView.builder(
