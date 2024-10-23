@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'custom_dropdown_theme.dart';
 
 class CustomDropdownBottomSheet<T> extends StatefulWidget {
   final List<T> items;
@@ -9,6 +10,7 @@ class CustomDropdownBottomSheet<T> extends StatefulWidget {
   final bool showSearch;
   final Widget Function(T)? itemBuilder;
   final bool Function(T, String)? itemSearchCondition;
+  final CustomDropdownTheme? theme;
 
   const CustomDropdownBottomSheet({
     required this.items,
@@ -19,6 +21,7 @@ class CustomDropdownBottomSheet<T> extends StatefulWidget {
     this.showSearch = true,
     this.itemBuilder,
     this.itemSearchCondition,
+    this.theme,
     Key? key,
   }) : super(key: key);
 
@@ -62,75 +65,118 @@ class _CustomDropdownBottomSheetState<T>
   @override
   Widget build(BuildContext context) {
     return Material(
+      surfaceTintColor: widget.fullScreenMode ? null : Colors.transparent,
+      color: widget.fullScreenMode ? null : Colors.transparent,
       child: Container(
+        decoration: widget.theme?.bottomSheetBoxDecoration ??
+            BoxDecoration(
+              color:
+                  widget.theme?.backgroundColor ?? Colors.grey.withOpacity(0.6),
+              borderRadius: widget.fullScreenMode
+                  ? null
+                  : BorderRadius.vertical(top: Radius.circular(25.0)),
+            ),
         height:
             widget.fullScreenMode ? MediaQuery.of(context).size.height : 400,
-        padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
+            if (widget.fullScreenMode) ...[
+              AppBar(
+                title: Text(
                   widget.title,
-                  style: const TextStyle(
-                    fontSize: 20.0,
-                    fontWeight: FontWeight.bold,
-                  ),
+                  style: widget.theme?.titleTextStyle ??
+                      Theme.of(context).textTheme.bodyLarge,
                 ),
-                IconButton(
-                  icon: const Icon(
-                    Icons.close,
-                  ),
-                  onPressed: () => Navigator.pop(context),
+                backgroundColor:
+                    widget.theme?.backgroundColor ?? Colors.transparent,
+                iconTheme: IconThemeData(
+                    color: widget.theme?.backIconColor ?? Colors.black),
+              )
+            ] else ...[
+              const SizedBox(height: 10.0),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(16.0, 0, 16.0, 0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(widget.title,
+                        style: widget.theme?.titleTextStyle ??
+                            Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                fontSize: 20.0, fontWeight: FontWeight.bold)),
+                    IconButton(
+                      icon: Icon(
+                        Icons.close,
+                        color: widget.theme?.backIconColor ?? Colors.black,
+                      ),
+                      onPressed: () => Navigator.pop(context),
+                    ),
+                  ],
                 ),
-              ],
-            ),
+              )
+            ],
             const SizedBox(height: 10.0),
             if (widget.showSearch)
-              Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: TextField(
-                      textAlignVertical: TextAlignVertical(y: 0.2),
-                      controller: searchController,
-                      decoration: InputDecoration(
-                        prefixIcon: Icon(
-                          Icons.search,
-                        ),
-                        hintText: 'Search here',
-                        hintStyle:
-                            TextStyle(color: Colors.black.withOpacity(0.6)),
-                        border: InputBorder.none,
-                      ))),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(16.0, 0, 16.0, 0),
+                child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: TextField(
+                        textAlignVertical: TextAlignVertical(y: 0.2),
+                        controller: searchController,
+                        decoration: widget.theme?.searchBoxDecoration ??
+                            InputDecoration(
+                              prefixIcon: Icon(
+                                Icons.search,
+                              ),
+                              hintText: 'Search here',
+                              hintStyle: Theme.of(context)
+                                  .textTheme
+                                  .bodyMedium
+                                  ?.copyWith(
+                                      fontSize: 16.0,
+                                      fontWeight: FontWeight.normal,
+                                      color: Colors.black.withOpacity(0.6)),
+                              border: InputBorder.none,
+                            ))),
+              ),
             if (widget.showSearch) const SizedBox(height: 10.0),
             Expanded(
-              child: ListView.builder(
-                controller: widget.scrollController,
-                itemCount: filteredItems.length,
-                itemBuilder: (context, index) {
-                  final item = filteredItems[index];
-                  return Container(
-                    child: widget.itemBuilder != null
-                        ? GestureDetector(
-                            onTap: () {
-                              widget.onItemSelected(item);
-                              Navigator.pop(context);
-                            },
-                            child: widget.itemBuilder!(item),
-                          )
-                        : ListTile(
-                            title: Text(item.toString()),
-                            onTap: () {
-                              widget.onItemSelected(item);
-                              Navigator.pop(context);
-                            },
-                          ),
-                  );
-                },
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(16.0, 0, 16.0, 0),
+                child: ListView.builder(
+                  controller: widget.scrollController,
+                  itemCount: filteredItems.length,
+                  itemBuilder: (context, index) {
+                    final item = filteredItems[index];
+                    return Container(
+                      child: widget.itemBuilder != null
+                          ? GestureDetector(
+                              onTap: () {
+                                widget.onItemSelected(item);
+                                Navigator.pop(context);
+                              },
+                              child: widget.itemBuilder!(item),
+                            )
+                          : ListTile(
+                              title: Text(item.toString(),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyMedium
+                                      ?.copyWith(
+                                          fontSize: 18.0,
+                                          fontWeight: FontWeight.normal)),
+                              onTap: () {
+                                widget.onItemSelected(item);
+                                Navigator.pop(context);
+                              },
+                            ),
+                    );
+                  },
+                ),
               ),
             ),
           ],
