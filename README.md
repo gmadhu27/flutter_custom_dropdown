@@ -19,7 +19,7 @@ To use the package, add flutter_custom_dropdown_list to your pubspec.yaml:
 
 ```dart
 dependencies:
- flutter_custom_dropdown_list: ^1.0.0
+ flutter_custom_dropdown_list: ^1.0.1
 
 ```
 
