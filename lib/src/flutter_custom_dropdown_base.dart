@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_dropdown_list/src/helper/dropdown_helper.dart';
 import 'helper/bottom_sheet_mode.dart';
+import 'helper/custom_dropdown_theme.dart';
 
 class CustomDropdownHelper {
   static void showDropdown<T>({
@@ -8,24 +9,31 @@ class CustomDropdownHelper {
     required List<T> items,
     required String title,
     required Function(T?) onItemSelected,
+    //optional
     BottomSheetMode bottomSheetMode = BottomSheetMode.normal,
     bool showSearch = true,
     Widget Function(T)? itemBuilder,
+    bool Function(T, String)? itemSearchCondition,
+    CustomDropdownTheme? theme,
   }) {
     // Check if the items list is empty
     _checkItemsList(items);
+
     // Check if the item class has override toString()
-    _checkToStringOverride(items);
+    if (itemBuilder == null) {
+      _checkToStringOverride(items);
+    }
 
     _showCustomDropdown(
-      context: context,
-      items: items,
-      title: title,
-      onItemSelected: onItemSelected,
-      bottomSheetMode: bottomSheetMode,
-      showSearch: showSearch,
-      itemBuilder: itemBuilder,
-    );
+        context: context,
+        items: items,
+        title: title,
+        onItemSelected: onItemSelected,
+        bottomSheetMode: bottomSheetMode,
+        showSearch: showSearch,
+        itemBuilder: itemBuilder,
+        itemSearchCondition: itemSearchCondition,
+        theme: theme);
   }
 
   static void _checkItemsList<T>(List<T> items) {
@@ -55,26 +63,28 @@ class CustomDropdownHelper {
     BottomSheetMode bottomSheetMode = BottomSheetMode.normal,
     bool showSearch = true,
     Widget Function(T)? itemBuilder,
+    itemSearchCondition,
+    theme,
   }) {
     // Show the bottom sheet based on the mode
     if (bottomSheetMode == BottomSheetMode.modal) {
       showModalBottomSheet(
         context: context,
-        isScrollControlled: true, // Allow full-screen modal
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(top: Radius.circular(20.0)),
-        ),
+        isScrollControlled: true,
         builder: (context) {
           return DraggableScrollableSheet(
             expand: false,
             builder: (context, scrollController) {
               return CustomDropdownBottomSheet<T>(
-                  items: items,
-                  title: title,
-                  onItemSelected: onItemSelected,
-                  scrollController: scrollController,
-                  showSearch: showSearch, // Pass showSearch
-                  itemBuilder: itemBuilder);
+                items: items,
+                title: title,
+                onItemSelected: onItemSelected,
+                scrollController: scrollController,
+                showSearch: showSearch,
+                itemBuilder: itemBuilder,
+                itemSearchCondition: itemSearchCondition,
+                theme: theme,
+              );
             },
           );
         },
@@ -87,8 +97,10 @@ class CustomDropdownHelper {
               items: items,
               title: title,
               onItemSelected: onItemSelected,
-              showSearch: showSearch, // Pass showSearch
-              itemBuilder: itemBuilder);
+              showSearch: showSearch,
+              itemBuilder: itemBuilder,
+              itemSearchCondition: itemSearchCondition,
+              theme: theme);
         },
       );
     } else {
@@ -98,9 +110,11 @@ class CustomDropdownHelper {
             items: items,
             title: title,
             onItemSelected: onItemSelected,
-            fullScreenMode: true, // Full-screen mode flag
-            showSearch: showSearch, // Pass showSearch
-            itemBuilder: itemBuilder),
+            fullScreenMode: true,
+            showSearch: showSearch,
+            itemBuilder: itemBuilder,
+            itemSearchCondition: itemSearchCondition,
+            theme: theme),
       ));
     }
   }

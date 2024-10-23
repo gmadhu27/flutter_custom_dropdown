@@ -5,5 +5,4 @@ library;
 
 export 'src/flutter_custom_dropdown_base.dart';
 export 'src/helper/bottom_sheet_mode.dart';
-
-// TODO: Export any libraries intended for clients of this package.
+export 'src/helper/custom_dropdown_theme.dart';
