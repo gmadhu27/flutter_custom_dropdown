@@ -65,6 +65,8 @@ class _CustomDropdownBottomSheetState<T>
   @override
   Widget build(BuildContext context) {
     return Material(
+      surfaceTintColor: widget.fullScreenMode ? null : Colors.transparent,
+      color: widget.fullScreenMode ? null : Colors.transparent,
       child: Container(
         decoration: widget.theme?.bottomSheetBoxDecoration ??
             BoxDecoration(
@@ -72,7 +74,7 @@ class _CustomDropdownBottomSheetState<T>
                   widget.theme?.backgroundColor ?? Colors.grey.withOpacity(0.6),
               borderRadius: widget.fullScreenMode
                   ? null
-                  : BorderRadius.vertical(top: Radius.circular(20.0)),
+                  : BorderRadius.vertical(top: Radius.circular(25.0)),
             ),
         height:
             widget.fullScreenMode ? MediaQuery.of(context).size.height : 400,

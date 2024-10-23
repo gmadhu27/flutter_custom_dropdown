@@ -69,7 +69,6 @@ class CustomDropdownHelper {
     // Show the bottom sheet based on the mode
     if (bottomSheetMode == BottomSheetMode.modal) {
       showModalBottomSheet(
-        backgroundColor: Colors.transparent,
         context: context,
         isScrollControlled: true,
         builder: (context) {

@@ -3,10 +3,12 @@ import 'package:flutter_custom_dropdown_list/flutter_custom_dropdown.dart';
 import 'dropdown_item.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
