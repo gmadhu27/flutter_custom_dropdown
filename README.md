@@ -1,6 +1,6 @@
 ## flutter_custom_dropdown_list
 
-A customizable dropdown package for Flutter that allows developers to display a dropdown using bottom sheets or a full-screen modal. This package supports dynamic item rendering with optional itemBuilder, search functionality, and three different bottom sheet display modes.
+A customizable dropdown package for Flutter that allows developers to display a dropdown using bottom sheets or a full-screen modal. This package supports dynamic item rendering with optional itemBuilder, customizable search functionality, and three different bottom sheet display modes, making it easy to integrate into any Flutter project.
 
 
 ## Features
