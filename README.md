@@ -1,313 +1,248 @@
-## flutter_custom_dropdown_list
+# flutter_custom_dropdown_list
 
-A customizable dropdown package for Flutter that allows developers to display a dropdown using bottom sheets or a full-screen modal. This package supports dynamic item rendering with optional itemBuilder, customizable search functionality, and three different bottom sheet display modes, making it easy to integrate into any Flutter project.
-
+A customizable Flutter dropdown package for showing typed item lists in native-feeling bottom sheets or a full-screen selector. It supports custom item rows, searchable lists, custom search logic, and theme control for title, icons, sheet background, and search field styling.
 
 ## Features
-* Customizable Items: Use dynamic items of any type and display them using an optional itemBuilder.
-* Multiple Bottom Sheet Modes: Supports modal, normal, and full-screen modes for the dropdown.
-* Search Functionality: Easily enable or disable search in the dropdown to filter items.
-* Generic Support: Allows usage of any class or data model as dropdown items.
-* ToString Validation: Automatically checks if your custom class overrides the toString() method to ensure proper display.
-* Optional ItemBuilder: Customize the way items are displayed using a builder function or default to a ListTile.
-* Optional itemSearchCondition: Optional search functionality is an optional parameter that allows to define custom logic for searching through the dropdown items.
-* Optional customizable color and theming for dropdown and search UI.
 
+* Generic item support for any model type.
+* Three display modes: normal fixed sheet, draggable modal sheet, and full screen.
+* Search can be enabled, disabled, or customized with your own matcher.
+* Custom row UI with `itemBuilder`.
+* Theme support for title style, icon color, search field decoration, and sheet decoration.
+* Keyboard-aware sheets that keep the search field and list usable.
+* Scrolling the result list does not dismiss the keyboard.
+* Full-screen mode uses an iOS-style back header.
 
 ## Getting started
-To use the package, add flutter_custom_dropdown_list to your pubspec.yaml:
 
-```dart
+Add the package to your `pubspec.yaml`:
+
+```yaml
 dependencies:
- flutter_custom_dropdown_list: ^1.0.1
-
+  flutter_custom_dropdown_list: ^1.0.2
 ```
 
-or 
+Or use the Git repository:
 
-```dart
+```yaml
 dependencies:
   flutter_custom_dropdown_list:
     git:
-      url:https://github.com/gmadhu27/flutter_custom_dropdown.git
-
+      url: https://github.com/gmadhu27/flutter_custom_dropdown.git
 ```
 
-Make sure to import the package in your Dart files:
+Import it:
+
 ```dart
-import 'package:flutter_custom_dropdown_list/flutter_custom_dropdown.dart';
+import 'package:flutter_custom_dropdown_list/flutter_custom_dropdown_list.dart';
 ```
 
-## Usage
-Here’s a basic example of how to use the CustomDropdownHelper to show a dropdown with custom items and an optional search bar:
-
-Simple Dropdown Example:
+## Basic usage
 
 ```dart
-import 'package:flutter/material.dart';
-import 'package:flutter_custom_dropdown_list/flutter_custom_dropdown.dart';
-
-void main() {
-  runApp(MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Custom Dropdown Example',
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Custom Dropdown Example'),
-        ),
-        body: const Padding(
-          padding: EdgeInsets.all(16.0),
-          child: DropdownExample(),
-        ),
-      ),
-    );
-  }
-}
-
-class DropdownExample extends StatelessWidget {
-  const DropdownExample({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    final items = [
-      DropdownItem(id: "1", name: 'Item 1'),
-      DropdownItem(id: "2", name: 'Item 2'),
-      DropdownItem(id: "3", name: 'Item 3'),
-    ];
-
-    return Center(
-      child: ElevatedButton(
-        onPressed: () {
-          CustomDropdownHelper.showDropdown<DropdownItem>(
-            context: context,
-            items: items,
-            title: "Select an Item",
-            onItemSelected: (item) {
-              if (item != null) {
-                print("Selected: ${item.name}");
-              }
-            },
-            itemBuilder: (item) {
-              return ListTile(
-                title: Text(item.name),
-                subtitle: Text("ID: ${item.id}"),
-              );
-            },
-          );
-        },
-        child: const Text("Show Dropdown"),
-      ),
-    );
-  }
-}
+CustomDropdownHelper.showDropdown<Country>(
+  context: context,
+  items: countries,
+  title: 'Select country',
+  bottomSheetMode: BottomSheetMode.modal,
+  showSearch: true,
+  onItemSelected: (country) {
+    if (country != null) {
+      print('Selected: ${country.name}');
+    }
+  },
+);
 ```
-## DropdownItem Class Example
-Here is a basic example of a DropdownItem class, which is used in the dropdown. This class implements the toString() method to ensure proper display of the item names.
+
+Your item model should override `toString()` when you do not provide an `itemBuilder`.
 
 ```dart
-class DropdownItem {
-  final String id;
+class Country {
+  const Country({
+    required this.name,
+    required this.isoCode,
+    required this.dialCode,
+  });
+
   final String name;
-
-  DropdownItem({required this.id, required this.name});
+  final String isoCode;
+  final String dialCode;
 
   @override
-  String toString() => name; // Override toString for display purposes
+  String toString() => '$name $isoCode $dialCode';
 }
 ```
-## Searchable Dropdown Example
+
+## Bottom sheet modes
+
 ```dart
-CustomDropdownHelper.showDropdown<DropdownItem>(
+CustomDropdownHelper.showDropdown<Country>(
   context: context,
-  items: myItemsList, // List of DropdownItem or custom class
-  title: "Select an Occupation",
-  showSearch: true, // Enable search functionality
-  onItemSelected: (selectedItem) {
-    // Handle the selected item
-    print('Selected: ${selectedItem.name}');
-  },
+  items: countries,
+  title: 'Select country',
+  bottomSheetMode: BottomSheetMode.normal,
+  onItemSelected: (country) {},
 );
 ```
-## Optional itemSearchCondition
-The itemSearchCondition is an optional parameter that allows you to define custom logic for searching through the dropdown items. Here’s an example of how to use the dropdown in your Flutter app, including the optional itemSearchCondition for custom search behavior:
+
+Available modes:
+
+* `BottomSheetMode.normal`: a fixed-height native-style bottom sheet.
+* `BottomSheetMode.modal`: a draggable modal sheet. It opens based on the list height and can expand upward, leaving a small top inset.
+* `BottomSheetMode.full`: a full-screen selector with an iOS-style back header.
+
+## Custom item rows
+
+Use `itemBuilder` to design each row.
 
 ```dart
-CustomDropdownHelper.showDropdown<DropdownItem>(
+CustomDropdownHelper.showDropdown<Country>(
   context: context,
-  items: items,
-  title: 'Select Item',
-  onItemSelected: (selectedItem) {
-  print('Selected: ${selectedItem?.name}');
-   }, 
-  showSearch: true,
-  itemSearchCondition: (item, searchText) {
-   // Custom search condition: match both id and name
-   return item.name.toLowerCase().contains(searchText.toLowerCase()) ||
-    item.id.contains(searchText);
- },
-);
-```
-In the example above, the search checks if the name or id of the item contains the search text. You can customize this to fit your specific data structure and search needs.
-
-If itemSearchCondition is not provided, the dropdown will use the default behavior of matching the toString() method for filtering items during search.
-
-## Bottom Sheet Modes
-You can display the dropdown using three different modes:
-
-* Normal (default): Displays a normal bottom sheet that does not cover the screen fully.
-* Modal: This displays the dropdown as a modal bottom sheet.
-* Full-Screen: Displays the dropdown in full-screen mode.
-  
-```dart
-CustomDropdownHelper.showDropdown<DropdownItem>(
-  context: context,
-  items: myItemsList,
-  title: "Choose Item",
-  bottomSheetMode: BottomSheetMode.full, // Full-screen mode
-  onItemSelected: (selectedItem) {
-    print('Selected: ${selectedItem.name}');
-  },
-);
-```
-## Custom Item Display
-You can provide a custom item builder to display items in the dropdown. If not provided, the package defaults to a ListTile using the toString() method of the items.
-```dart
-CustomDropdownHelper.showDropdown<DropdownItem>(
-  context: context,
-  items: myItemsList,
-  title: "Custom Item Display",
-  itemBuilder: (item) {
-    return Card(
-      child: ListTile(
-        title: Text(item.name),
-        subtitle: Text("ID: ${item.id}"),
-      ),
-    );
-  },
-  onItemSelected: (selectedItem) {
-    print('Selected: ${selectedItem.name}');
-  },
-);
-```
-## Custom Dropdown Theme
-You can create customizable dropdowns with themes for background color, text style, icons, and more. Here’s an example of how to use it.
-
-```dart
-CustomDropdownHelper.showDropdown(
-  context: context,
-  items: items,
-  title: "Select an Item",
-  // Bottom sheet mode (optional, default is normal mode)
-  bottomSheetMode: BottomSheetMode.full,
-  // Show search bar (optional, default is true)
-  showSearch: true,
-  onItemSelected: (DropdownItem? selectedItem) {
-    // Handle the selected item
-    setState(() {
-      _selectedItemName = selectedItem?.name;
-    });
-  },
-  // Custom item builder (optional)
-  itemBuilder: (item) {
+  items: countries,
+  title: 'Select country code',
+  itemBuilder: (country) {
     return ListTile(
-      title: Text(item.name),
-      subtitle: Text(item.id),
+      leading: Text(country.flag),
+      title: Text(country.name),
+      subtitle: Text(country.isoCode),
+      trailing: Text(country.dialCode),
     );
   },
-  // Custom search logic (optional)
-  itemSearchCondition: (item, searchText) {
-    return item.id.toLowerCase().contains(searchText) ||
-        item.name.toLowerCase().contains(searchText);
+  onItemSelected: (country) {
+    print(country?.name);
   },
-  // Apply CustomDropdownTheme (optional)
-  theme: CustomDropdownTheme(
-    // Background color for the dropdown (optional)
-    backgroundColor: Colors.deepOrange,
-    // Back icon color (optional)
-    backIconColor: Colors.white,
-    // Title text style (optional)
-    titleTextStyle: const TextStyle(color: Colors.white, fontSize: 22),
-    // Search box decoration (optional)
-    searchBoxDecoration: InputDecoration(
-      hintText: 'Search here',
-      hintStyle: const TextStyle(color: Colors.white, fontSize: 18),
-      filled: true,
-      fillColor: Colors.orange.shade100,
-      border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(10),
-        borderSide: const BorderSide(color: Colors.orange, width: 2),
-      ),
-      prefixIcon: const Icon(Icons.search, color: Colors.white),
-    ),
-    // Bottom sheet box decoration (optional)
-    bottomSheetBoxDecoration: const BoxDecoration(
-      color: Colors.deepOrange,
-      borderRadius: BorderRadius.vertical(top: Radius.circular(30.0)),
-    ),
-  ),
 );
 ```
-## CustomDropdownTheme Properties
-| Property | Type | Description |
-| -------- | ---- | :------: |
-| backgroundColor | Color? | The background color of the dropdown and the bottom sheet. Default is Colors.grey.withOpacity(0.6). |
-| backIconColor | Color? | The color of the back icon or close button. Default is Colors.black. |
-| titleTextStyle | TextStyle? | The text style for the title of the dropdown or bottom sheet. |
-| searchBoxDecoration | InputDecoration? | Custom decoration for the search box input field, including hint text, border, and prefix icon. |
-| bottomSheetBoxDecoration | BoxDecoration? | Custom decoration for the bottom sheet, allowing you to control background color, shape, etc. |
 
-1. Background Color: You can change the background color of the dropdown by passing a custom color to the backgroundColor property. This affects the entire bottom sheet background.
+## Custom search
+
+By default, search matches `item.toString()`. Use `itemSearchCondition` for custom behavior.
 
 ```dart
-backgroundColor: Colors.deepOrange
+CustomDropdownHelper.showDropdown<Country>(
+  context: context,
+  items: countries,
+  title: 'Select country',
+  showSearch: true,
+  itemSearchCondition: (country, searchText) {
+    return country.name.toLowerCase().contains(searchText) ||
+        country.isoCode.toLowerCase().contains(searchText) ||
+        country.dialCode.contains(searchText);
+  },
+  onItemSelected: (country) {},
+);
 ```
-2. Back Icon Color: You can change the backicon color of the dropdown by passing a custom color to the backIconColor property. This affects the entire bottom sheet close icon.
+
+Disable the search field with `showSearch: false`.
 
 ```dart
-backIconColor: Colors.deepOrange
+CustomDropdownHelper.showDropdown<Country>(
+  context: context,
+  items: countries,
+  title: 'Select country',
+  showSearch: false,
+  onItemSelected: (country) {},
+);
 ```
-3. Title Text Style: Modify the appearance of the title text inside the dropdown by using the titleTextStyle property. This allows for font size, color, and weight adjustments.
+
+## Custom theme
+
+Use `CustomDropdownTheme` to control the visual style.
 
 ```dart
-titleTextStyle: TextStyle(color: Colors.white, fontSize: 22)
-```
-4. Search Box Decoration: Customize the look of the search input field by passing a custom InputDecoration to searchBoxDecoration. You can change the hint text, input border, and the prefix icon.
-
-```dart
-searchBoxDecoration: InputDecoration(
-  hintText: 'Search here',
-  hintStyle: TextStyle(color: Colors.white, fontSize: 18),
-  filled: true,
-  fillColor: Colors.orange.shade100,
-  border: OutlineInputBorder(
-    borderRadius: BorderRadius.circular(10),
-    borderSide: BorderSide(color: Colors.orange, width: 2),
+CustomDropdownHelper.showDropdown<Country>(
+  context: context,
+  items: countries,
+  title: 'Select country',
+  bottomSheetMode: BottomSheetMode.modal,
+  showSearch: true,
+  itemBuilder: (country) {
+    return ListTile(
+      title: Text(country.name),
+      subtitle: Text(country.isoCode),
+      trailing: Text(country.dialCode),
+    );
+  },
+  itemSearchCondition: (country, searchText) {
+    return country.name.toLowerCase().contains(searchText) ||
+        country.isoCode.toLowerCase().contains(searchText) ||
+        country.dialCode.contains(searchText);
+  },
+  theme: CustomDropdownTheme(
+    backgroundColor: const Color(0xFFFEFBFF),
+    backIconColor: const Color(0xFF002A86),
+    titleTextStyle: const TextStyle(
+      color: Color(0xFF20212A),
+      fontSize: 20,
+      fontWeight: FontWeight.w800,
+    ),
+    searchBoxDecoration: InputDecoration(
+      isDense: true,
+      filled: true,
+      fillColor: const Color(0xFFFAFAFD),
+      hintText: 'Search country / code',
+      hintStyle: const TextStyle(
+        color: Color(0xFF7E808A),
+        fontSize: 14,
+        fontWeight: FontWeight.w500,
+      ),
+      prefixIcon: const Icon(
+        Icons.search_rounded,
+        color: Color(0xFF4F5665),
+        size: 19,
+      ),
+      prefixIconConstraints: const BoxConstraints(
+        minWidth: 44,
+        minHeight: 44,
+      ),
+      contentPadding: const EdgeInsets.symmetric(
+        horizontal: 14,
+        vertical: 13,
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12),
+        borderSide: const BorderSide(color: Color(0xFFE2E3EA)),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12),
+        borderSide: const BorderSide(color: Color(0xFF002A86), width: 1.4),
+      ),
+    ),
+    bottomSheetBoxDecoration: const BoxDecoration(
+      color: Color(0xFFFEFBFF),
+      borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+    ),
   ),
-  prefixIcon: Icon(Icons.search, color: Colors.white),
-)
-```
-5. Bottom Sheet Box Decoration: Customize the shape and color of the bottom sheet using the bottomSheetBoxDecoration. You can modify the shape by adding a border radius.
-
-```dart
-bottomSheetBoxDecoration: BoxDecoration(
-  color: Colors.deepOrange,
-  borderRadius: BorderRadius.vertical(top: Radius.circular(30.0)),
-)
+  onItemSelected: (country) {},
+);
 ```
 
-## Exception Handling
-* Empty List: If the items list is empty, an exception will be thrown to notify the developer.
-* ToString Check: The package checks if the class used for the items overrides the toString() method. If not, an exception will be thrown, ensuring that the dropdown can display items correctly.
+## Theme properties
 
+| Property | Type | Description |
+| -------- | ---- | ----------- |
+| `backgroundColor` | `Color?` | Background color for the dropdown surface. |
+| `backIconColor` | `Color?` | Color of the close/back icon. |
+| `titleTextStyle` | `TextStyle?` | Text style for the sheet title. |
+| `searchBoxDecoration` | `InputDecoration?` | Decoration for the search field. |
+| `bottomSheetBoxDecoration` | `BoxDecoration?` | Decoration for normal and modal sheet surfaces. |
+
+## Implementation flow
+
+1. Create a list of items for the dropdown.
+2. Override `toString()` on the item model, or provide an `itemBuilder`.
+3. Call `CustomDropdownHelper.showDropdown<T>()` from a tap or button action.
+4. Choose a `BottomSheetMode`: `normal`, `modal`, or `full`.
+5. Use `showSearch: true` or `false` depending on the screen.
+6. Add `itemSearchCondition` when search should match custom fields.
+7. Use `CustomDropdownTheme` to style the title, icon, sheet background, and search field.
+8. Read the selected item from `onItemSelected`.
+
+## Exceptions
+
+* Empty list: throws an exception because the dropdown has nothing to show.
+* Missing `toString()`: throws an exception when `itemBuilder` is not provided and the first item appears to use the default object string.
 
 ## Additional information
-Feel free to contribute to this package, raise issues, or suggest new features by creating an issue in this GitHub repository. This package is open-source, and contributions are always welcome.
 
-For more details and examples, visit the /example folder.
-
-This README provides a concise overview of how to use the package, examples, and additional information for users. You can modify the details based on your specific project requirements, including the repository link or contributing guidelines.
+Contributions, issues, and feature requests are welcome. For a complete working sample, see the `/example` folder.

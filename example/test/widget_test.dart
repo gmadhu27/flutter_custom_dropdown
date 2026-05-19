@@ -1,30 +1,41 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
-
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:example/main.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(MyApp());
+  testWidgets('selects a country from the dropdown', (tester) async {
+    await tester.pumpWidget(const MyApp());
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+    expect(find.text('Select country'), findsOneWidget);
+    expect(find.text('Normal sheet'), findsOneWidget);
+    expect(find.text('Modal sheet'), findsOneWidget);
+    expect(find.text('Full screen'), findsOneWidget);
+    expect(find.text('Without search'), findsOneWidget);
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
+    await tester.tap(find.text('Dark'));
+    await tester.pumpAndSettle();
+    expect(find.text('Light'), findsOneWidget);
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+    await tester.tap(find.text('Normal sheet'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Search country / code'), findsOneWidget);
+    expect(find.text('AVAILABLE MARKETS'), findsOneWidget);
+
+    await tester.tap(find.text('Angola'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('🇦🇴  Angola'), findsOneWidget);
+
+    await tester.tap(find.text('Without search'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Search country / code'), findsNothing);
+    expect(find.text('DR Congo'), findsOneWidget);
+
+    await tester.tap(find.text('DR Congo'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('🇨🇩  DR Congo'), findsOneWidget);
   });
 }
