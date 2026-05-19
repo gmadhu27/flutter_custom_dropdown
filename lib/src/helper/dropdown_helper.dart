@@ -85,17 +85,40 @@ class _CustomDropdownBottomSheetState<T>
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             if (widget.fullScreenMode) ...[
-              AppBar(
-                title: Text(
-                  widget.title,
-                  style:
-                      widget.theme?.titleTextStyle ??
-                      Theme.of(context).textTheme.bodyLarge,
-                ),
-                backgroundColor:
-                    widget.theme?.backgroundColor ?? Colors.transparent,
-                iconTheme: IconThemeData(
-                  color: widget.theme?.backIconColor ?? Colors.black,
+              SafeArea(
+                bottom: false,
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(12, 8, 16, 22),
+                  child: Row(
+                    children: [
+                      IconButton(
+                        onPressed: () => Navigator.pop(context),
+                        icon: Icon(
+                          Icons.arrow_back_ios_new_rounded,
+                          color: widget.theme?.backIconColor ?? Colors.black,
+                          size: 20,
+                        ),
+                        style: IconButton.styleFrom(
+                          minimumSize: const Size.square(40),
+                          padding: EdgeInsets.zero,
+                          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                        ),
+                      ),
+                      const SizedBox(width: 4),
+                      Expanded(
+                        child: Text(
+                          widget.title,
+                          style:
+                              widget.theme?.titleTextStyle ??
+                              Theme.of(context).textTheme.titleMedium?.copyWith(
+                                fontWeight: FontWeight.w800,
+                              ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ] else ...[

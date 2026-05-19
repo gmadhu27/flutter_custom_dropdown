@@ -3,21 +3,26 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:example/main.dart';
 
 void main() {
-  testWidgets('selects an item from the normal dropdown', (tester) async {
+  testWidgets('selects a country from the dropdown', (tester) async {
     await tester.pumpWidget(const MyApp());
 
-    expect(find.text('No item selected'), findsOneWidget);
+    expect(find.text('Select country'), findsOneWidget);
+    expect(find.text('Normal sheet'), findsOneWidget);
+    expect(find.text('Modal sheet'), findsOneWidget);
+    expect(find.text('Full screen'), findsOneWidget);
 
-    await tester.tap(find.text('Open Normal Custom Dropdown'));
+    await tester.tap(find.text('Normal sheet'));
     await tester.pumpAndSettle();
 
-    expect(find.text('Select an Item'), findsOneWidget);
-    expect(find.text('Option 1'), findsOneWidget);
+    expect(find.text('Search country / code'), findsOneWidget);
+    expect(find.text('AVAILABLE MARKETS'), findsOneWidget);
 
-    await tester.tap(find.text('Option 1'));
+    await tester.tap(find.text('Angola'));
     await tester.pumpAndSettle();
 
-    expect(find.text('Option 1'), findsOneWidget);
-    expect(find.text('No item selected'), findsNothing);
+    expect(find.text('🇦🇴  Angola'), findsOneWidget);
+
+    expect(find.text('Modal sheet'), findsOneWidget);
+    expect(find.text('Full screen'), findsOneWidget);
   });
 }
