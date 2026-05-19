@@ -1,7 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_custom_dropdown_list/flutter_custom_dropdown_list.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+  SystemChrome.setSystemUIOverlayStyle(
+    const SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent,
+      systemNavigationBarColor: Colors.transparent,
+      systemNavigationBarDividerColor: Colors.transparent,
+      statusBarIconBrightness: Brightness.dark,
+      systemNavigationBarIconBrightness: Brightness.dark,
+    ),
+  );
   runApp(const MyApp());
 }
 
@@ -165,22 +177,39 @@ class _CountrySelectorExampleState extends State<CountrySelectorExample> {
         backIconColor: const Color(0xFF002A86),
         titleTextStyle: Theme.of(context).textTheme.titleLarge?.copyWith(
           fontWeight: FontWeight.w800,
-          color: const Color(0xFF20212A),
+          color: mode == BottomSheetMode.full
+              ? const Color(0xFF002A86)
+              : const Color(0xFF20212A),
         ),
         searchBoxDecoration: InputDecoration(
+          isDense: true,
+          filled: true,
+          fillColor: const Color(0xFFFAFAFD),
           hintText: 'Search country / code',
-          hintStyle: const TextStyle(color: Color(0xFF7E808A), fontSize: 16),
-          prefixIcon: const Icon(Icons.search, color: Color(0xFF4F5665)),
+          hintStyle: const TextStyle(
+            color: Color(0xFF7E808A),
+            fontSize: 14,
+            fontWeight: FontWeight.w500,
+          ),
+          prefixIcon: const Icon(
+            Icons.search_rounded,
+            color: Color(0xFF4F5665),
+            size: 19,
+          ),
+          prefixIconConstraints: const BoxConstraints(
+            minWidth: 44,
+            minHeight: 44,
+          ),
           contentPadding: const EdgeInsets.symmetric(
-            horizontal: 18,
-            vertical: 18,
+            horizontal: 14,
+            vertical: 13,
           ),
           enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-            borderSide: const BorderSide(color: Color(0xFFC7C8D0)),
+            borderRadius: BorderRadius.circular(12),
+            borderSide: const BorderSide(color: Color(0xFFE2E3EA)),
           ),
           focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
+            borderRadius: BorderRadius.circular(12),
             borderSide: const BorderSide(color: Color(0xFF002A86), width: 1.4),
           ),
         ),

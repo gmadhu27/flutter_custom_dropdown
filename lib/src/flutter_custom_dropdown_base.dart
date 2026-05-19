@@ -72,37 +72,97 @@ class CustomDropdownHelper {
     if (bottomSheetMode == BottomSheetMode.modal) {
       showModalBottomSheet(
         context: context,
+        backgroundColor: Colors.transparent,
         isScrollControlled: true,
+        useSafeArea: true,
         builder: (context) {
-          return DraggableScrollableSheet(
-            expand: false,
-            builder: (context, scrollController) {
-              return CustomDropdownBottomSheet<T>(
-                items: items,
-                title: title,
-                onItemSelected: onItemSelected,
-                scrollController: scrollController,
-                showSearch: showSearch,
-                itemBuilder: itemBuilder,
-                itemSearchCondition: itemSearchCondition,
-                theme: theme,
-              );
-            },
+          return AnimatedPadding(
+            duration: const Duration(milliseconds: 180),
+            curve: Curves.easeOut,
+            padding: EdgeInsets.only(
+              bottom: MediaQuery.viewInsetsOf(context).bottom,
+            ),
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                final maxChildSize =
+                    ((constraints.maxHeight - 16) / constraints.maxHeight)
+                        .clamp(0.58, 1.0);
+                final estimatedSheetHeight =
+                    112.0 + (showSearch ? 68.0 : 0.0) + (items.length * 70.0);
+                final initialChildSize =
+                    (estimatedSheetHeight / constraints.maxHeight).clamp(
+                      0.36,
+                      maxChildSize,
+                    );
+                final snapSizes = initialChildSize == maxChildSize
+                    ? [maxChildSize]
+                    : [initialChildSize, maxChildSize];
+
+                return DraggableScrollableSheet(
+                  expand: false,
+                  initialChildSize: initialChildSize,
+                  minChildSize: 0.36,
+                  maxChildSize: maxChildSize,
+                  snap: true,
+                  snapSizes: snapSizes,
+                  builder: (context, scrollController) {
+                    return CustomDropdownBottomSheet<T>(
+                      items: items,
+                      title: title,
+                      onItemSelected: onItemSelected,
+                      scrollController: scrollController,
+                      showSearch: showSearch,
+                      showDragHandle: true,
+                      useParentHeight: true,
+                      itemBuilder: itemBuilder,
+                      itemSearchCondition: itemSearchCondition,
+                      theme: theme,
+                    );
+                  },
+                );
+              },
+            ),
           );
         },
       );
     } else if (bottomSheetMode == BottomSheetMode.normal) {
-      showBottomSheet(
+      showModalBottomSheet(
         context: context,
+        backgroundColor: Colors.transparent,
+        barrierColor: Colors.black.withValues(alpha: 0.24),
+        isScrollControlled: true,
+        useSafeArea: true,
         builder: (context) {
-          return CustomDropdownBottomSheet<T>(
-            items: items,
-            title: title,
-            onItemSelected: onItemSelected,
-            showSearch: showSearch,
-            itemBuilder: itemBuilder,
-            itemSearchCondition: itemSearchCondition,
-            theme: theme,
+          final mediaQuery = MediaQuery.of(context);
+          final keyboardHeight = mediaQuery.viewInsets.bottom;
+          final availableHeight =
+              mediaQuery.size.height -
+              keyboardHeight -
+              mediaQuery.padding.top -
+              16;
+          final sheetHeight = availableHeight.clamp(
+            260.0,
+            mediaQuery.size.height * 0.58,
+          );
+
+          return AnimatedPadding(
+            duration: const Duration(milliseconds: 180),
+            curve: Curves.easeOut,
+            padding: EdgeInsets.only(bottom: keyboardHeight),
+            child: SizedBox(
+              height: sheetHeight,
+              child: CustomDropdownBottomSheet<T>(
+                items: items,
+                title: title,
+                onItemSelected: onItemSelected,
+                showSearch: showSearch,
+                showDragHandle: true,
+                useParentHeight: true,
+                itemBuilder: itemBuilder,
+                itemSearchCondition: itemSearchCondition,
+                theme: theme,
+              ),
+            ),
           );
         },
       );
