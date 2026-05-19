@@ -1,4 +1,4 @@
-## flutter_custom_dropdown_list
+# flutter_custom_dropdown_list
 
 A customizable dropdown package for Flutter that allows developers to display a dropdown using bottom sheets or a full-screen modal. This package supports dynamic item rendering with optional itemBuilder, search functionality, and three different bottom sheet display modes.
 
@@ -17,25 +17,23 @@ A customizable dropdown package for Flutter that allows developers to display a 
 ## Getting started
 To use the package, add flutter_custom_dropdown_list to your pubspec.yaml:
 
-```dart
+```yaml
 dependencies:
- flutter_custom_dropdown_list: ^1.0.0
-
+  flutter_custom_dropdown_list: ^1.0.2
 ```
 
 or 
 
-```dart
+```yaml
 dependencies:
   flutter_custom_dropdown_list:
     git:
-      url:https://github.com/gmadhu27/flutter_custom_dropdown.git
-
+      url: https://github.com/gmadhu27/flutter_custom_dropdown.git
 ```
 
 Make sure to import the package in your Dart files:
 ```dart
-import 'package:flutter_custom_dropdown_list/flutter_custom_dropdown.dart';
+import 'package:flutter_custom_dropdown_list/flutter_custom_dropdown_list.dart';
 ```
 
 ## Usage
@@ -45,13 +43,15 @@ Simple Dropdown Example:
 
 ```dart
 import 'package:flutter/material.dart';
-import 'package:flutter_custom_dropdown_list/flutter_custom_dropdown.dart';
+import 'package:flutter_custom_dropdown_list/flutter_custom_dropdown_list.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -128,8 +128,9 @@ CustomDropdownHelper.showDropdown<DropdownItem>(
   title: "Select an Occupation",
   showSearch: true, // Enable search functionality
   onItemSelected: (selectedItem) {
-    // Handle the selected item
-    print('Selected: ${selectedItem.name}');
+    if (selectedItem != null) {
+      print('Selected: ${selectedItem.name}');
+    }
   },
 );
 ```
@@ -142,14 +143,14 @@ CustomDropdownHelper.showDropdown<DropdownItem>(
   items: items,
   title: 'Select Item',
   onItemSelected: (selectedItem) {
-  print('Selected: ${selectedItem?.name}');
-   }, 
+    print('Selected: ${selectedItem?.name}');
+  }, 
   showSearch: true,
   itemSearchCondition: (item, searchText) {
-   // Custom search condition: match both id and name
-   return item.name.toLowerCase().contains(searchText.toLowerCase()) ||
-    item.id.contains(searchText);
- },
+    // Custom search condition: match both id and name
+    return item.name.toLowerCase().contains(searchText) ||
+        item.id.toLowerCase().contains(searchText);
+  },
 );
 ```
 In the example above, the search checks if the name or id of the item contains the search text. You can customize this to fit your specific data structure and search needs.
@@ -170,7 +171,7 @@ CustomDropdownHelper.showDropdown<DropdownItem>(
   title: "Choose Item",
   bottomSheetMode: BottomSheetMode.full, // Full-screen mode
   onItemSelected: (selectedItem) {
-    print('Selected: ${selectedItem.name}');
+    print('Selected: ${selectedItem?.name}');
   },
 );
 ```
@@ -190,7 +191,7 @@ CustomDropdownHelper.showDropdown<DropdownItem>(
     );
   },
   onItemSelected: (selectedItem) {
-    print('Selected: ${selectedItem.name}');
+    print('Selected: ${selectedItem?.name}');
   },
 );
 ```
@@ -255,7 +256,7 @@ CustomDropdownHelper.showDropdown(
 ## CustomDropdownTheme Properties
 | Property | Type | Description |
 | -------- | ---- | :------: |
-| backgroundColor | Color? | The background color of the dropdown and the bottom sheet. Default is Colors.grey.withOpacity(0.6). |
+| backgroundColor | Color? | The background color of the dropdown and the bottom sheet. Default is Colors.grey.withValues(alpha: 0.6). |
 | backIconColor | Color? | The color of the back icon or close button. Default is Colors.black. |
 | titleTextStyle | TextStyle? | The text style for the title of the dropdown or bottom sheet. |
 | searchBoxDecoration | InputDecoration? | Custom decoration for the search box input field, including hint text, border, and prefix icon. |
@@ -309,5 +310,3 @@ bottomSheetBoxDecoration: BoxDecoration(
 Feel free to contribute to this package, raise issues, or suggest new features by creating an issue in this GitHub repository. This package is open-source, and contributions are always welcome.
 
 For more details and examples, visit the /example folder.
-
-This README provides a concise overview of how to use the package, examples, and additional information for users. You can modify the details based on your specific project requirements, including the repository link or contributing guidelines.

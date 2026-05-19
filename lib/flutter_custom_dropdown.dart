@@ -1,8 +1,6 @@
-/// Support for doing something awesome.
+/// Backwards-compatible entrypoint for older import paths.
 ///
-/// More dartdocs go here.
+/// Prefer importing `package:flutter_custom_dropdown_list/flutter_custom_dropdown_list.dart`.
 library;
 
-export 'src/flutter_custom_dropdown_base.dart';
-export 'src/helper/bottom_sheet_mode.dart';
-export 'src/helper/custom_dropdown_theme.dart';
+export 'flutter_custom_dropdown_list.dart';

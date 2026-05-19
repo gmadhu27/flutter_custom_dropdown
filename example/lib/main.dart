@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_custom_dropdown_list/flutter_custom_dropdown.dart';
+import 'package:flutter_custom_dropdown_list/flutter_custom_dropdown_list.dart';
 import 'dropdown_item.dart';
 
 void main() {
@@ -14,9 +14,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Custom Dropdown Example',
       home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Custom Dropdown Example'),
-        ),
+        appBar: AppBar(title: const Text('Custom Dropdown Example')),
         body: const Padding(
           padding: EdgeInsets.all(16.0),
           child: DropdownExample(),
@@ -98,10 +96,7 @@ class _DropdownExampleState extends State<DropdownExample> {
       },
       //itemBuilder is an optional
       itemBuilder: (item) {
-        return ListTile(
-          title: Text(item.name),
-          subtitle: Text(item.id),
-        );
+        return ListTile(title: Text(item.name), subtitle: Text(item.id));
       },
       // Custom search is an optional and handle logic here
       itemSearchCondition: (item, searchText) {

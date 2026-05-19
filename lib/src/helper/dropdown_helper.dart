@@ -4,7 +4,7 @@ import 'custom_dropdown_theme.dart';
 class CustomDropdownBottomSheet<T> extends StatefulWidget {
   final List<T> items;
   final String title;
-  final Function(T?) onItemSelected;
+  final ValueChanged<T?> onItemSelected;
   final ScrollController? scrollController;
   final bool fullScreenMode;
   final bool showSearch;
@@ -68,16 +68,19 @@ class _CustomDropdownBottomSheetState<T>
       surfaceTintColor: widget.fullScreenMode ? null : Colors.transparent,
       color: widget.fullScreenMode ? null : Colors.transparent,
       child: Container(
-        decoration: widget.theme?.bottomSheetBoxDecoration ??
+        decoration:
+            widget.theme?.bottomSheetBoxDecoration ??
             BoxDecoration(
-              color: widget.theme?.backgroundColor ??
+              color:
+                  widget.theme?.backgroundColor ??
                   Colors.grey.withValues(alpha: 0.6),
               borderRadius: widget.fullScreenMode
                   ? null
                   : BorderRadius.vertical(top: Radius.circular(25.0)),
             ),
-        height:
-            widget.fullScreenMode ? MediaQuery.of(context).size.height : 400,
+        height: widget.fullScreenMode
+            ? MediaQuery.of(context).size.height
+            : 400,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -85,14 +88,16 @@ class _CustomDropdownBottomSheetState<T>
               AppBar(
                 title: Text(
                   widget.title,
-                  style: widget.theme?.titleTextStyle ??
+                  style:
+                      widget.theme?.titleTextStyle ??
                       Theme.of(context).textTheme.bodyLarge,
                 ),
                 backgroundColor:
                     widget.theme?.backgroundColor ?? Colors.transparent,
                 iconTheme: IconThemeData(
-                    color: widget.theme?.backIconColor ?? Colors.black),
-              )
+                  color: widget.theme?.backIconColor ?? Colors.black,
+                ),
+              ),
             ] else ...[
               const SizedBox(height: 10.0),
               Padding(
@@ -100,10 +105,15 @@ class _CustomDropdownBottomSheetState<T>
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(widget.title,
-                        style: widget.theme?.titleTextStyle ??
-                            Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                fontSize: 20.0, fontWeight: FontWeight.bold)),
+                    Text(
+                      widget.title,
+                      style:
+                          widget.theme?.titleTextStyle ??
+                          Theme.of(context).textTheme.bodyMedium?.copyWith(
+                            fontSize: 20.0,
+                            fontWeight: FontWeight.bold,
+                          ),
+                    ),
                     IconButton(
                       icon: Icon(
                         Icons.close,
@@ -113,36 +123,35 @@ class _CustomDropdownBottomSheetState<T>
                     ),
                   ],
                 ),
-              )
+              ),
             ],
             const SizedBox(height: 10.0),
             if (widget.showSearch)
               Padding(
                 padding: const EdgeInsets.fromLTRB(16.0, 0, 16.0, 0),
                 child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: TextField(
-                        textAlignVertical: TextAlignVertical(y: 0.2),
-                        controller: searchController,
-                        decoration: widget.theme?.searchBoxDecoration ??
-                            InputDecoration(
-                              prefixIcon: Icon(
-                                Icons.search,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: TextField(
+                    textAlignVertical: TextAlignVertical(y: 0.2),
+                    controller: searchController,
+                    decoration:
+                        widget.theme?.searchBoxDecoration ??
+                        InputDecoration(
+                          prefixIcon: Icon(Icons.search),
+                          hintText: 'Search here',
+                          hintStyle: Theme.of(context).textTheme.bodyMedium
+                              ?.copyWith(
+                                fontSize: 16.0,
+                                fontWeight: FontWeight.normal,
+                                color: Colors.black.withValues(alpha: 0.6),
                               ),
-                              hintText: 'Search here',
-                              hintStyle: Theme.of(context)
-                                  .textTheme
-                                  .bodyMedium
-                                  ?.copyWith(
-                                      fontSize: 16.0,
-                                      fontWeight: FontWeight.normal,
-                                      color:
-                                          Colors.black.withValues(alpha: 0.6)),
-                              border: InputBorder.none,
-                            ))),
+                          border: InputBorder.none,
+                        ),
+                  ),
+                ),
               ),
             if (widget.showSearch) const SizedBox(height: 10.0),
             Expanded(
@@ -163,13 +172,14 @@ class _CustomDropdownBottomSheetState<T>
                               child: widget.itemBuilder!(item),
                             )
                           : ListTile(
-                              title: Text(item.toString(),
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodyMedium
-                                      ?.copyWith(
-                                          fontSize: 18.0,
-                                          fontWeight: FontWeight.normal)),
+                              title: Text(
+                                item.toString(),
+                                style: Theme.of(context).textTheme.bodyMedium
+                                    ?.copyWith(
+                                      fontSize: 18.0,
+                                      fontWeight: FontWeight.normal,
+                                    ),
+                              ),
                               onTap: () {
                                 widget.onItemSelected(item);
                                 Navigator.pop(context);

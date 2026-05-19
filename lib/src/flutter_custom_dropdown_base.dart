@@ -8,7 +8,7 @@ class CustomDropdownHelper {
     required BuildContext context,
     required List<T> items,
     required String title,
-    required Function(T?) onItemSelected,
+    required ValueChanged<T?> onItemSelected,
     //optional
     BottomSheetMode bottomSheetMode = BottomSheetMode.normal,
     bool showSearch = true,
@@ -25,15 +25,16 @@ class CustomDropdownHelper {
     }
 
     _showCustomDropdown(
-        context: context,
-        items: items,
-        title: title,
-        onItemSelected: onItemSelected,
-        bottomSheetMode: bottomSheetMode,
-        showSearch: showSearch,
-        itemBuilder: itemBuilder,
-        itemSearchCondition: itemSearchCondition,
-        theme: theme);
+      context: context,
+      items: items,
+      title: title,
+      onItemSelected: onItemSelected,
+      bottomSheetMode: bottomSheetMode,
+      showSearch: showSearch,
+      itemBuilder: itemBuilder,
+      itemSearchCondition: itemSearchCondition,
+      theme: theme,
+    );
   }
 
   static void _checkItemsList<T>(List<T> items) {
@@ -50,7 +51,8 @@ class CustomDropdownHelper {
       if (itemToString == objectToString ||
           itemToString.contains('Instance of')) {
         throw Exception(
-            'Class ${items.first.runtimeType} must override toString() to display correctly in the dropdown.');
+          'Class ${items.first.runtimeType} must override toString() to display correctly in the dropdown.',
+        );
       }
     }
   }
@@ -59,12 +61,12 @@ class CustomDropdownHelper {
     required BuildContext context,
     required List<T> items,
     required String title,
-    required Function(T?) onItemSelected,
+    required ValueChanged<T?> onItemSelected,
     BottomSheetMode bottomSheetMode = BottomSheetMode.normal,
     bool showSearch = true,
     Widget Function(T)? itemBuilder,
-    itemSearchCondition,
-    theme,
+    bool Function(T, String)? itemSearchCondition,
+    CustomDropdownTheme? theme,
   }) {
     // Show the bottom sheet based on the mode
     if (bottomSheetMode == BottomSheetMode.modal) {
@@ -94,19 +96,21 @@ class CustomDropdownHelper {
         context: context,
         builder: (context) {
           return CustomDropdownBottomSheet<T>(
-              items: items,
-              title: title,
-              onItemSelected: onItemSelected,
-              showSearch: showSearch,
-              itemBuilder: itemBuilder,
-              itemSearchCondition: itemSearchCondition,
-              theme: theme);
+            items: items,
+            title: title,
+            onItemSelected: onItemSelected,
+            showSearch: showSearch,
+            itemBuilder: itemBuilder,
+            itemSearchCondition: itemSearchCondition,
+            theme: theme,
+          );
         },
       );
     } else {
       // Navigate to a full-screen page
-      Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => CustomDropdownBottomSheet<T>(
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => CustomDropdownBottomSheet<T>(
             items: items,
             title: title,
             onItemSelected: onItemSelected,
@@ -114,8 +118,10 @@ class CustomDropdownHelper {
             showSearch: showSearch,
             itemBuilder: itemBuilder,
             itemSearchCondition: itemSearchCondition,
-            theme: theme),
-      ));
+            theme: theme,
+          ),
+        ),
+      );
     }
   }
 }
