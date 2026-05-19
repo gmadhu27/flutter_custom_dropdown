@@ -22,11 +22,11 @@ class CustomDropdownBottomSheet<T> extends StatefulWidget {
     this.itemBuilder,
     this.itemSearchCondition,
     this.theme,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
-  _CustomDropdownBottomSheetState createState() =>
+  State<CustomDropdownBottomSheet<T>> createState() =>
       _CustomDropdownBottomSheetState<T>();
 }
 
@@ -70,8 +70,8 @@ class _CustomDropdownBottomSheetState<T>
       child: Container(
         decoration: widget.theme?.bottomSheetBoxDecoration ??
             BoxDecoration(
-              color:
-                  widget.theme?.backgroundColor ?? Colors.grey.withOpacity(0.6),
+              color: widget.theme?.backgroundColor ??
+                  Colors.grey.withValues(alpha: 0.6),
               borderRadius: widget.fullScreenMode
                   ? null
                   : BorderRadius.vertical(top: Radius.circular(25.0)),
@@ -139,7 +139,8 @@ class _CustomDropdownBottomSheetState<T>
                                   ?.copyWith(
                                       fontSize: 16.0,
                                       fontWeight: FontWeight.normal,
-                                      color: Colors.black.withOpacity(0.6)),
+                                      color:
+                                          Colors.black.withValues(alpha: 0.6)),
                               border: InputBorder.none,
                             ))),
               ),

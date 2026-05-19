@@ -5,7 +5,7 @@ homepage: https://github.com/gmadhu27
 repository: https://github.com/gmadhu27/flutter_custom_dropdown
 
 environment:
-  sdk: ^3.5.3
+  sdk: ^3.11.0
 
 # Add regular dependencies here.
 dependencies:
@@ -13,5 +13,5 @@ dependencies:
     sdk: flutter
 
 dev_dependencies:
-  lints: ^4.0.0
+  lints: ^6.1.0
   test: ^1.24.0

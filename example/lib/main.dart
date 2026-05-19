@@ -30,7 +30,7 @@ class DropdownExample extends StatefulWidget {
   const DropdownExample({super.key});
 
   @override
-  _DropdownExampleState createState() => _DropdownExampleState();
+  State<DropdownExample> createState() => _DropdownExampleState();
 }
 
 class _DropdownExampleState extends State<DropdownExample> {
