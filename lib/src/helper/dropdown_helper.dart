@@ -132,28 +132,29 @@ class _CustomDropdownBottomSheetState<T>
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(12, 6, 20, 10),
                   child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       IconButton(
                         onPressed: () => Navigator.pop(context),
                         icon: Icon(
                           Icons.arrow_back_ios_new_rounded,
                           color: widget.theme?.backIconColor ?? textColor,
-                          size: 20,
+                          size: 18,
                         ),
                         style: IconButton.styleFrom(
-                          minimumSize: const Size.square(40),
+                          minimumSize: const Size.square(36),
                           padding: EdgeInsets.zero,
                           tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                         ),
                       ),
-                      const SizedBox(width: 8),
+                      const SizedBox(width: 6),
                       Expanded(
                         child: Text(
                           widget.title,
                           style:
                               widget.theme?.titleTextStyle ??
                               Theme.of(context).textTheme.titleMedium?.copyWith(
-                                fontWeight: FontWeight.w800,
+                                fontWeight: FontWeight.w500,
                                 color: textColor,
                               ),
                           maxLines: 1,
@@ -258,6 +259,8 @@ class _CustomDropdownBottomSheetState<T>
                     bottom: mediaQuery.padding.bottom + 16,
                   ),
                   physics: const BouncingScrollPhysics(),
+                  keyboardDismissBehavior:
+                      ScrollViewKeyboardDismissBehavior.manual,
                   itemCount: filteredItems.length,
                   itemBuilder: (context, index) {
                     final item = filteredItems[index];

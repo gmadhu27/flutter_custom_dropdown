@@ -170,15 +170,19 @@ class CustomDropdownHelper {
       // Navigate to a full-screen page
       Navigator.of(context).push(
         MaterialPageRoute(
-          builder: (context) => CustomDropdownBottomSheet<T>(
-            items: items,
-            title: title,
-            onItemSelected: onItemSelected,
-            fullScreenMode: true,
-            showSearch: showSearch,
-            itemBuilder: itemBuilder,
-            itemSearchCondition: itemSearchCondition,
-            theme: theme,
+          builder: (context) => Scaffold(
+            resizeToAvoidBottomInset: true,
+            body: CustomDropdownBottomSheet<T>(
+              items: items,
+              title: title,
+              onItemSelected: onItemSelected,
+              fullScreenMode: true,
+              useParentHeight: true,
+              showSearch: showSearch,
+              itemBuilder: itemBuilder,
+              itemSearchCondition: itemSearchCondition,
+              theme: theme,
+            ),
           ),
         ),
       );

@@ -10,6 +10,11 @@ void main() {
     expect(find.text('Normal sheet'), findsOneWidget);
     expect(find.text('Modal sheet'), findsOneWidget);
     expect(find.text('Full screen'), findsOneWidget);
+    expect(find.text('Without search'), findsOneWidget);
+
+    await tester.tap(find.text('Dark'));
+    await tester.pumpAndSettle();
+    expect(find.text('Light'), findsOneWidget);
 
     await tester.tap(find.text('Normal sheet'));
     await tester.pumpAndSettle();
@@ -22,7 +27,15 @@ void main() {
 
     expect(find.text('🇦🇴  Angola'), findsOneWidget);
 
-    expect(find.text('Modal sheet'), findsOneWidget);
-    expect(find.text('Full screen'), findsOneWidget);
+    await tester.tap(find.text('Without search'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Search country / code'), findsNothing);
+    expect(find.text('DR Congo'), findsOneWidget);
+
+    await tester.tap(find.text('DR Congo'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('🇨🇩  DR Congo'), findsOneWidget);
   });
 }
