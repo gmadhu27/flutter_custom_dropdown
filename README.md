@@ -10,6 +10,7 @@ A customizable Flutter dropdown package for showing typed item lists in native-f
 * Custom row UI with `itemBuilder`.
 * Theme support for title style, icon color, search field decoration, and sheet decoration.
 * Keyboard-aware sheets that keep the search field and list usable.
+* Scrolling the result list does not dismiss the keyboard.
 * Full-screen mode uses an iOS-style back header.
 
 ## Getting started
@@ -132,6 +133,18 @@ CustomDropdownHelper.showDropdown<Country>(
 );
 ```
 
+Disable the search field with `showSearch: false`.
+
+```dart
+CustomDropdownHelper.showDropdown<Country>(
+  context: context,
+  items: countries,
+  title: 'Select country',
+  showSearch: false,
+  onItemSelected: (country) {},
+);
+```
+
 ## Custom theme
 
 Use `CustomDropdownTheme` to control the visual style.
@@ -214,15 +227,16 @@ CustomDropdownHelper.showDropdown<Country>(
 | `searchBoxDecoration` | `InputDecoration?` | Decoration for the search field. |
 | `bottomSheetBoxDecoration` | `BoxDecoration?` | Decoration for normal and modal sheet surfaces. |
 
-## Example app
+## Implementation flow
 
-The `/example` app demonstrates a country selector with:
-
-* flags, names, ISO codes, and dial codes;
-* normal, modal, and full-screen modes;
-* custom row UI;
-* custom search by country name, ISO code, or dial code;
-* Android 15/16 edge-to-edge support.
+1. Create a list of items for the dropdown.
+2. Override `toString()` on the item model, or provide an `itemBuilder`.
+3. Call `CustomDropdownHelper.showDropdown<T>()` from a tap or button action.
+4. Choose a `BottomSheetMode`: `normal`, `modal`, or `full`.
+5. Use `showSearch: true` or `false` depending on the screen.
+6. Add `itemSearchCondition` when search should match custom fields.
+7. Use `CustomDropdownTheme` to style the title, icon, sheet background, and search field.
+8. Read the selected item from `onItemSelected`.
 
 ## Exceptions
 
